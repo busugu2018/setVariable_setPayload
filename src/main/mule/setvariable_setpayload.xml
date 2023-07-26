@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="48b01f70-bbb3-445b-966c-673adb1d4551" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="setvariable_setpayloadFlow" doc:id="c57d390d-e417-4972-a186-17078322af32" >
+		<http:listener doc:name="Listener" doc:id="a292ac45-536e-40f4-9ed0-c0a1bb339b71" config-ref="HTTP_Listener_config" path="/setvariable"/>
+		<set-variable value="547" doc:name="Set Variable" doc:id="dd3af0f5-c291-43d0-9b50-adf767aedec2" variableName="employeeId"/>
+		<set-payload value="#[vars.employeeId]" doc:name="Set Payload" doc:id="d4024b4c-12bc-4a3c-a9f4-91ee1be25f56" />
+		<logger level="INFO" doc:name="Logger" doc:id="4436d17e-b083-4941-97c1-5d567797a975" message="#[payload]"/>
+	</flow>
+	<flow name="getFlow" doc:id="4794880e-23ad-4bc2-916e-1b917cfa3e66" >
+		<http:listener doc:name="Listener" doc:id="780cbe67-2ea5-4c72-848f-1b42ca952fba" config-ref="HTTP_Listener_config" path="/getFlow" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7128260d-97df-4bad-87de-2474dbfe3e68" message="Get Only method allowed..."/>
+		<set-payload value='"Message from getFlow."' doc:name="Set Payload" doc:id="81a33c54-9534-4fc2-88b0-740d2d6d8845" />
+	</flow>
+	<flow name="postFlow1" doc:id="d43696a5-0618-4724-b0b7-feec4a5af8bf">
+		<http:listener doc:name="Listener" doc:id="3bee618a-066c-49d0-8f92-a1bd9d87433d" config-ref="HTTP_Listener_config" path="/postFlow" allowedMethods="POST" />
+		<set-payload value='"Message from postFlow."' doc:name="Set Payload" doc:id="569cfff2-9c4f-48db-be84-efbdb58959cc" />
+		<logger level="INFO" doc:name="Logger" doc:id="82b7fd81-50a6-4d90-be29-822693770141" message="POST is the only method allowed..." />
+	</flow>
+	<flow name="debuging1" doc:id="f2a025ad-9682-4dd1-973b-743f3330b029">
+		<http:listener doc:name="Listener" doc:id="97c6a2c4-eb9f-4356-b445-bd51322334f4" config-ref="HTTP_Listener_config" path="/debuging1" />
+		<set-variable value="547" doc:name="Set Variable" doc:id="f3f03665-a947-453c-a4fd-a9dc2750af48" variableName="employeeId" />
+		<logger level="INFO" doc:name="Logger" doc:id="ea6bb78b-c78f-440f-b3d8-3037ae3f4833" message="Before setPayload" />
+		<set-payload value="#[vars.employeeId]" doc:name="Set Payload" doc:id="b6e78d79-fc16-478a-b14c-95442e2cf141" />
+		<logger level="INFO" doc:name="Logger" doc:id="028e5482-68f4-4afa-9a93-a9b9da1f41c5" message="#[payload]" />
+	</flow>
+	<flow name="choice1" doc:id="d3ddd28c-3b0d-4d0c-a063-dd170c5a9446" >
+		<http:listener doc:name="Listener" doc:id="3c54ceeb-6868-4c33-8a9f-583e6aed33ac" config-ref="HTTP_Listener_config" path="/choice"/>
+		<logger level="INFO" doc:name="Logger" doc:id="cfc210b7-2939-45ed-9295-0282dfd8bd44" message="Request received"/>
+		<set-variable value="#[attributes.queryParams.language]" doc:name="Set Variable" doc:id="c19da213-c326-445b-b2a7-cda63217ba31" variableName="language"/>
+		<choice doc:name="Choice" doc:id="2f42876a-20fe-4ec2-9a05-631401fd73bc" >
+			<when expression='#[vars.language == "German"]'>
+				<set-payload value="Gunten Tag" doc:name="Set Payload" doc:id="f2c319d4-fd39-42df-b062-52584bfe8263" />
+			</when>
+			<when expression='#[attributes.language == "Spanish"]'>
+				<set-payload value="Buenos Dias" doc:name="Set Payload" doc:id="cc53f4a2-9522-4a84-af53-6374f64cbc99" />
+			</when>
+			<when expression='#[attributes.language == "French"]'>
+				<set-payload value="Bonjour" doc:name="Set Payload" doc:id="693c0dc4-f8c9-433e-9735-7249040616c0" />
+			</when>
+			<otherwise >
+				<set-payload value="Good morning" doc:name="Set Payload" doc:id="4d2b2aeb-88f2-4f0d-aa8f-05fecc79e944" />
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
