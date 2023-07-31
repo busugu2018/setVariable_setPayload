@@ -38,10 +38,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			<when expression='#[vars.language == "German"]'>
 				<set-payload value="Gunten Tag" doc:name="Set Payload" doc:id="f2c319d4-fd39-42df-b062-52584bfe8263" />
 			</when>
-			<when expression='#[attributes.language == "Spanish"]'>
+			<when expression='#[vars.language == "Spanish"]'>
 				<set-payload value="Buenos Dias" doc:name="Set Payload" doc:id="cc53f4a2-9522-4a84-af53-6374f64cbc99" />
 			</when>
-			<when expression='#[attributes.language == "French"]'>
+			<when expression='#[vars.language == "French"]'>
 				<set-payload value="Bonjour" doc:name="Set Payload" doc:id="693c0dc4-f8c9-433e-9735-7249040616c0" />
 			</when>
 			<otherwise >
